@@ -12,7 +12,9 @@ export default class QRCornerSquare {
     _basicDot(args: BasicFigureDrawArgs): void;
     _basicSquare(args: BasicFigureDrawArgs): void;
     _basicExtraRounded(args: BasicFigureDrawArgs): void;
+    _basicZigZag(args: BasicFigureDrawArgs): void;
     _drawDot({ x, y, size, rotation }: DrawArgs): void;
     _drawSquare({ x, y, size, rotation }: DrawArgs): void;
     _drawExtraRounded({ x, y, size, rotation }: DrawArgs): void;
+    _drawZigZag({ x, y, size }: DrawArgs): void;
 }

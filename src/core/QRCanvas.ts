@@ -6,6 +6,7 @@ import QRCornerDot from "../figures/cornerDot/canvas/QRCornerDot";
 import { RequiredOptions } from "./QROptions";
 import gradientTypes from "../constants/gradientTypes";
 import { QRCode, Gradient, FilterFunction } from "../types";
+import cornerSquareTypes from "../constants/cornerSquareTypes";
 
 const squareMask = [
   [1, 1, 1, 1, 1, 1, 1],
@@ -302,7 +303,9 @@ export default class QRCanvas {
         canvasContext.fillStyle = canvasContext.strokeStyle = options.cornersSquareOptions.color;
       }
 
-      canvasContext.fill("evenodd");
+      if (options.cornersSquareOptions?.type !== cornerSquareTypes.zigZag) {
+        canvasContext.fill("evenodd");
+      }
 
       if (options.cornersDotOptions?.type) {
         const cornersDot = new QRCornerDot({ context: canvasContext, type: options.cornersDotOptions?.type });
