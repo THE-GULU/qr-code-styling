@@ -10,6 +10,9 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/eslint-recommended"
   ],
+  rules: {
+    "@typescript-eslint/no-explicit-any": "off"
+  },
   parserOptions: {
     sourceType: "module"
   }

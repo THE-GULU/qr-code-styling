@@ -24,8 +24,8 @@ export default class QRCornerSquare {
         drawFunction = this._drawExtraRounded;
         break;
       case cornerSquareTypes.zigZag:
-        drawFunction = this._drawZigZag
-        break
+        drawFunction = this._drawZigZag;
+        break;
       case cornerSquareTypes.dot:
       default:
         drawFunction = this._drawDot;
@@ -73,24 +73,24 @@ export default class QRCornerSquare {
   }
 
   _basicZigZag(args: BasicFigureDrawArgsCanvas): void {
-    const { size, context } = args
-    const dotSize = size / 7
+    const { size, context } = args;
+    const dotSize = size / 7;
 
     this._rotateFigure({
       ...args,
       draw: () => {
         context.scale(0.9, 0.9);
         getZigZagRectPath(
-          (size) / 12,
-          (size) / 3,
-          { right: -size / 2, left: 0, top: 0, bottom: -size / 2, width: size, height: size},
-          'vertical',
-          { offset: { dx: -size / 2, dy: -size / 2},ending: size/2 ,stroke: dotSize },
+          size / 12,
+          size / 3,
+          { right: -size / 2, left: 0, top: 0, bottom: -size / 2, width: size, height: size },
+          "vertical",
+          { offset: { dx: -size / 2, dy: -size / 2 }, ending: size / 2, stroke: dotSize },
           context
-        )
+        );
         context.scale(1.1111, 1.1111);
-      },
-    })
+      }
+    });
   }
 
   _basicExtraRounded(args: BasicFigureDrawArgsCanvas): void {
@@ -133,7 +133,7 @@ export default class QRCornerSquare {
     this._basicExtraRounded({ x, y, size, context, rotation });
   }
 
-  _drawZigZag({ x, y, size, context, rotation }: DrawArgsCanvas): void {
-    this._basicZigZag({ x, y, size, context, rotation: 0 })
+  _drawZigZag({ x, y, size, context }: DrawArgsCanvas): void {
+    this._basicZigZag({ x, y, size, context, rotation: 0 });
   }
 }
