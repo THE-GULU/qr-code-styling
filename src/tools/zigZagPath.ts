@@ -7,10 +7,6 @@ const Axis = {
     return { x, y }
   }
   
-  const getOffset = (dx: number, dy: number) => {
-    return { dx, dy }
-  }
-  
   /// reference https://www.desmos.com/calculator/mcrxahzmm0
   const getZigZagAxisCoordinate = (triangleHeight: number, triangleBase: number, coordinate: any, { shift = 0 }) => {
     return Math.abs((coordinate + shift) / triangleBase - Math.floor((coordinate + shift) / triangleBase) - 0.5) * triangleHeight * 2
