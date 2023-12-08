@@ -17,7 +17,7 @@ const getZigZagAxisCoordinate = (triangleHeight: number, triangleBase: number, c
   );
 };
 
-const getZigZagPointList = (
+export const getZigZagPointList = (
   triangleHeight: number,
   triangleBase: number,
   rect: any,

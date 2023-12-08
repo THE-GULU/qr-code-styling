@@ -22,6 +22,9 @@ export default class QRCornerSquare {
       case cornerSquareTypes.extraRounded:
         drawFunction = this._drawExtraRounded;
         break;
+      case cornerSquareTypes.zigZag:
+        drawFunction = this._drawZigZag;
+        break;
       case cornerSquareTypes.dot:
       default:
         drawFunction = this._drawDot;
@@ -86,6 +89,53 @@ export default class QRCornerSquare {
     });
   }
 
+  _basicZigZag(args: BasicFigureDrawArgs): void {
+    const { size, x, y } = args;
+    const dotSize = size / 7 - 4;
+
+    this._rotateFigure({
+      ...args,
+      draw: () => {
+        this._element = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        this._element.setAttribute("clip-rule", "evenodd");
+        this._element.setAttribute(
+          "d",
+          `M ${x} ${y + size / 12}` +
+            `${new Array(6)
+              .fill(0)
+              .map((_, idx) =>
+                idx % 2 === 0 ? `l ${size / 3 / 2} ${-size / 12}` : `l ${size / 3 / 2} ${size / 12}`
+              )}` +
+            `v ${size - (size / 12) * 2}` +
+            `${new Array(6)
+              .fill(0)
+              .map((_, idx) =>
+                idx % 2 === 0 ? `l ${-size / 3 / 2} ${size / 12}` : `l ${-size / 3 / 2} ${-size / 12}`
+              )}` +
+            `v ${-(size - (size / 12) * 2)}` +
+            `z` +
+            `M ${x + dotSize} ${y + dotSize / 2 + size / 12}` +
+            `l ${size / 3 / 2 - dotSize} ${-(dotSize / 5)}` +
+            `${new Array(4)
+              .fill(0)
+              .map((_, idx) =>
+                idx % 2 !== 0 ? `l ${size / 3 / 2} ${-size / 12}` : `l ${size / 3 / 2} ${size / 12}`
+              )}` +
+            `l ${size / 3 / 2 - dotSize} ${dotSize / 5}` +
+            `v ${size - dotSize - (size / 12) * 2}` +
+            `l ${-(size / 3 / 2 - dotSize)} ${dotSize / 5}` +
+            `${new Array(4)
+              .fill(0)
+              .map((_, idx) =>
+                idx % 2 !== 0 ? `l ${-size / 3 / 2} ${size / 12}` : `l ${-size / 3 / 2} ${-size / 12}`
+              )}` +
+            `l ${-(size / 3 / 2 - dotSize)} ${-(dotSize / 5)}` +
+            `z`
+        );
+      }
+    });
+  }
+
   _basicExtraRounded(args: BasicFigureDrawArgs): void {
     const { size, x, y } = args;
     const dotSize = size / 7;
@@ -130,5 +180,9 @@ export default class QRCornerSquare {
 
   _drawExtraRounded({ x, y, size, rotation }: DrawArgs): void {
     this._basicExtraRounded({ x, y, size, rotation });
+  }
+
+  _drawZigZag({ x, y, size, rotation }: DrawArgs): void {
+    this._basicZigZag({ x, y, size, rotation: 0 });
   }
 }
