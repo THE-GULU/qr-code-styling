@@ -126,6 +126,8 @@ export default class QRSVG {
 
     if (this._options.image) {
       this.drawImage({ width: drawImageSize.width, height: drawImageSize.height, count, dotSize });
+    } else if (this._options.svgImage) {
+      this.drawSVGImage({ width: drawImageSize.width, height: drawImageSize.height, count, dotSize });
     }
   }
 
@@ -382,8 +384,37 @@ export default class QRSVG {
     const dw = width - options.imageOptions.margin * 2;
     const dh = height - options.imageOptions.margin * 2;
 
+    // const image = options.image || document.createElementNS("http://www.w3.org/2000/svg", "image");
     const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
     image.setAttribute("href", options.image || "");
+    image.setAttribute("x", String(dx));
+    image.setAttribute("y", String(dy));
+    image.setAttribute("width", `${dw}px`);
+    image.setAttribute("height", `${dh}px`);
+
+    this._element.appendChild(image);
+  }
+
+  drawSVGImage({
+    width,
+    height,
+    count,
+    dotSize
+  }: {
+    width: number;
+    height: number;
+    count: number;
+    dotSize: number;
+  }): void {
+    const options = this._options;
+    const xBeginning = Math.floor((options.width - count * dotSize) / 2);
+    const yBeginning = Math.floor((options.height - count * dotSize) / 2);
+    const dx = xBeginning + options.imageOptions.margin + (count * dotSize - width) / 2;
+    const dy = yBeginning + options.imageOptions.margin + (count * dotSize - height) / 2;
+    const dw = width - options.imageOptions.margin * 2;
+    const dh = height - options.imageOptions.margin * 2;
+
+    const image = options.svgImage || document.createElementNS("http://www.w3.org/2000/svg", "svg");
     image.setAttribute("x", String(dx));
     image.setAttribute("y", String(dy));
     image.setAttribute("width", `${dw}px`);

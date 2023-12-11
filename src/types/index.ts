@@ -105,6 +105,7 @@ export type Options = {
   margin?: number;
   data?: string;
   image?: string;
+  svgImage?: SVGAElement;
   qrOptions?: {
     typeNumber?: TypeNumber;
     mode?: Mode;

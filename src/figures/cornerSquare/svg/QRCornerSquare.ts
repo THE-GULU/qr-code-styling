@@ -91,8 +91,13 @@ export default class QRCornerSquare {
 
   _basicZigZag(args: BasicFigureDrawArgs): void {
     const { size, x, y } = args;
-    const dotSize = size / 7 - 4;
-
+    const dotSize = (size / 7) * 0.9;
+    const slope = (y + size / 12 - y) / (x + size / 3 / 2 - x);
+    const height = Math.abs(
+      size / 12 + size / 12 - (slope * (x + size / 3 / 2 - (x + dotSize)) + (size / 12 + size / 12))
+    );
+    const length = Math.abs(x + dotSize - (x + dotSize + (size / 3 / 2 - dotSize)));
+    const startY = y + dotSize + height;
     this._rotateFigure({
       ...args,
       draw: () => {
@@ -114,22 +119,22 @@ export default class QRCornerSquare {
               )}` +
             `v ${-(size - (size / 12) * 2)}` +
             `z` +
-            `M ${x + dotSize} ${y + dotSize / 2 + size / 12}` +
-            `l ${size / 3 / 2 - dotSize} ${-(dotSize / 5)}` +
+            `M ${x + dotSize} ${startY}` +
+            `v ${size - dotSize * 2 - height * 2}` +
+            `l ${length} ${height}` +
             `${new Array(4)
               .fill(0)
               .map((_, idx) =>
-                idx % 2 !== 0 ? `l ${size / 3 / 2} ${-size / 12}` : `l ${size / 3 / 2} ${size / 12}`
+                idx % 2 !== 0 ? `l ${size / 3 / 2} ${size / 12}` : `l ${size / 3 / 2} ${-size / 12}`
               )}` +
-            `l ${size / 3 / 2 - dotSize} ${dotSize / 5}` +
-            `v ${size - dotSize - (size / 12) * 2}` +
-            `l ${-(size / 3 / 2 - dotSize)} ${dotSize / 5}` +
+            `l ${length} ${-height}` +
+            `v ${-(size - dotSize * 2 - height * 2)}` +
+            `l ${-length} ${-height}` +
             `${new Array(4)
               .fill(0)
               .map((_, idx) =>
-                idx % 2 !== 0 ? `l ${-size / 3 / 2} ${size / 12}` : `l ${-size / 3 / 2} ${-size / 12}`
+                idx % 2 !== 0 ? `l ${-size / 3 / 2} ${-size / 12}` : `l ${-size / 3 / 2} ${size / 12}`
               )}` +
-            `l ${-(size / 3 / 2 - dotSize)} ${-(dotSize / 5)}` +
             `z`
         );
       }

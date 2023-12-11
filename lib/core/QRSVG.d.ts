@@ -25,6 +25,12 @@ export default class QRSVG {
         count: number;
         dotSize: number;
     }): void;
+    drawSVGImage({ width, height, count, dotSize }: {
+        width: number;
+        height: number;
+        count: number;
+        dotSize: number;
+    }): void;
     _createColor({ options, color, additionalRotation, x, y, height, width, name }: {
         options?: Gradient;
         color?: string;
