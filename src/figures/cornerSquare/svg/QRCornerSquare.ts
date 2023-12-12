@@ -91,13 +91,16 @@ export default class QRCornerSquare {
 
   _basicZigZag(args: BasicFigureDrawArgs): void {
     const { size, x, y } = args;
-    const dotSize = (size / 7) * 0.9;
-    const slope = (y + size / 12 - y) / (x + size / 3 / 2 - x);
-    const height = Math.abs(
-      size / 12 + size / 12 - (slope * (x + size / 3 / 2 - (x + dotSize)) + (size / 12 + size / 12))
-    );
-    const length = Math.abs(x + dotSize - (x + dotSize + (size / 3 / 2 - dotSize)));
-    const startY = y + dotSize + height;
+    const dotSize = size / 7;
+    const triangleBase = (size - dotSize) / 3 / 2;
+    const triangleHeight = size / 12;
+    const slope = triangleHeight / triangleBase;
+
+    const length = Math.abs(x + dotSize - (x + triangleBase + dotSize / 2));
+    const startY = Math.abs(y + dotSize - -slope * (x + dotSize + length - (x + dotSize)));
+    const outerStartY = Math.abs(y - -slope * (x + triangleBase + dotSize / 2 - x));
+    const height = Math.abs(y + dotSize - startY);
+    const outerHeight = Math.abs(y - outerStartY);
     this._rotateFigure({
       ...args,
       draw: () => {
@@ -105,19 +108,23 @@ export default class QRCornerSquare {
         this._element.setAttribute("clip-rule", "evenodd");
         this._element.setAttribute(
           "d",
-          `M ${x} ${y + size / 12}` +
-            `${new Array(6)
+          `M ${x} ${outerStartY}` +
+            `l ${triangleBase + dotSize / 2} ${-outerHeight}` +
+            `${new Array(4)
               .fill(0)
               .map((_, idx) =>
-                idx % 2 === 0 ? `l ${size / 3 / 2} ${-size / 12}` : `l ${size / 3 / 2} ${size / 12}`
+                idx % 2 !== 0 ? `l ${triangleBase} ${-triangleHeight}` : `l ${triangleBase} ${triangleHeight}`
               )}` +
-            `v ${size - (size / 12) * 2}` +
-            `${new Array(6)
+            `l ${triangleBase + dotSize / 2} ${outerHeight}` +
+            `v ${size - outerHeight * 2}` +
+            `l ${-(triangleBase + dotSize / 2)} ${outerHeight}` +
+            `${new Array(4)
               .fill(0)
               .map((_, idx) =>
-                idx % 2 === 0 ? `l ${-size / 3 / 2} ${size / 12}` : `l ${-size / 3 / 2} ${-size / 12}`
+                idx % 2 !== 0 ? `l ${-triangleBase} ${triangleHeight}` : `l ${-triangleBase} ${-triangleHeight}`
               )}` +
-            `v ${-(size - (size / 12) * 2)}` +
+            `l ${-(triangleBase + dotSize / 2)} ${-outerHeight}` +
+            // `v ${-(size - triangleHeight * 2)}` +
             `z` +
             `M ${x + dotSize} ${startY}` +
             `v ${size - dotSize * 2 - height * 2}` +
@@ -125,7 +132,7 @@ export default class QRCornerSquare {
             `${new Array(4)
               .fill(0)
               .map((_, idx) =>
-                idx % 2 !== 0 ? `l ${size / 3 / 2} ${size / 12}` : `l ${size / 3 / 2} ${-size / 12}`
+                idx % 2 !== 0 ? `l ${triangleBase} ${triangleHeight}` : `l ${triangleBase} ${-triangleHeight}`
               )}` +
             `l ${length} ${-height}` +
             `v ${-(size - dotSize * 2 - height * 2)}` +
@@ -133,7 +140,7 @@ export default class QRCornerSquare {
             `${new Array(4)
               .fill(0)
               .map((_, idx) =>
-                idx % 2 !== 0 ? `l ${-size / 3 / 2} ${-size / 12}` : `l ${-size / 3 / 2} ${size / 12}`
+                idx % 2 !== 0 ? `l ${-triangleBase} ${-triangleHeight}` : `l ${-triangleBase} ${triangleHeight}`
               )}` +
             `z`
         );
