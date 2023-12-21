@@ -138,7 +138,7 @@ Property|Type                                     |Default Value|Description
 --------|-----------------------------------------|-------------|-----------------
 color   |string                                   |             |Color of Corners Square
 gradient|object                                   |             |Gradient of Corners Square
-type    |string (`'dot' 'square' 'extra-rounded'`)|             |Style of Corners Square
+type    |string (`'dot' 'square' 'extra-rounded' 'zig-zag'`)|             |Style of Corners Square
 
 `options.cornersDotOptions` structure
 
